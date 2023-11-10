@@ -15,7 +15,6 @@ dotenv.config();
 const redisClient = redis.createClient({
   url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
   password: process.env.REDIS_PASSWORD,
-  legacyMode:true,
 });
 
 redisClient.connect().catch(console.error);
@@ -86,7 +85,6 @@ app.use('/user', userRouter);
 app.use((req, res, next) => {
   const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
   error.status = 404;
-  logger.info('hello');
   logger.error(error.message);
   next(error);
 }); //이 미들웨어의 역할이 뭐지? 그냥 에러 담당이면 에러담당 미들웨어에 다 써도 되는 내용 아님?
