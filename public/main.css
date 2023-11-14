@@ -99,15 +99,24 @@ input[type='text'], input[type='email'], input[type='password'], textarea {
   font-size: 12px;
   cursor: pointer;
 }
-.like {
+.twit-unfollow{
+  background: silver;
+}
+
+.like, .unlike {
   padding: 1px 5px;
   background: #fff;
   border: 1px solid silver;
   border-radius: 5px;
-  color: skyblue;
+  color: green;
   font-size: 12px;
   cursor: pointer;
 }
+.unlike{
+  background:silver;
+}
+
+
 .delete {
   padding: 1px 5px;
   background: #fff;

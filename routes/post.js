@@ -63,7 +63,7 @@ router.post('/', isLoggedIn, upload2.none(), async (req, res, next) => { //파�
 router.post('/:postId/delete', isLoggedIn, async (req, res, next) => {
   try {
     console.log(req.params.postId);
-    await Post.destroy({ where: { id: req.params.postId } }); //한글쓰면 외계어나오는데 이거 stringify(JSON()) 뭐 이런 메소드 했던거 떠올려 보라.
+    await Post.destroy({ where: { id: req.params.postId } }); 
     res.send('success');
 
   } catch (error) {
@@ -72,6 +72,27 @@ router.post('/:postId/delete', isLoggedIn, async (req, res, next) => {
   }
 });
 
+router.post('/:postId/like', async (req, res, next) => {
+  try {
+    const post = await Post.findOne({ where: { id: req.params.postId } });
+    await post.addLiker(req.user.id); // 여기에는 as 이름으로 한다
+    res.send('ok');
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
+router.post('/:postId/unlike', async (req, res, next) => {
+  try {
+    const post = await Post.findOne({ where: { id: req.params.postId } });
+    await post.removeLiker(req.user.id);
+    res.send('ok');
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
 
 
 

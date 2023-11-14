@@ -23,15 +23,4 @@ User.associate(db);
 Post.associate(db);
 Hashtag.associate(db);
 
-db.User.belongsToMany(db.Post, {
-  foreignKey: 'likerId',
-  as: 'likedPosts',
-  through: 'Like',
-});
-db.Post.belongsToMany(db.User, {
-  foreignKey: 'likedPostId',
-  as: 'likers',
-  through: 'Like',
-});
-
 module.exports = db;

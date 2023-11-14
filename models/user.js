@@ -38,6 +38,7 @@ module.exports = class User extends Sequelize.Model {
   }
   static associate(db) {
     db.User.hasMany(db.Post);    
+    
     db.User.belongsToMany(db.User, {
       foreignKey: 'followingId',
       as: 'Followers', // User의 alias. table의 이름이 UserUser가 될 수는 없으니.
@@ -48,5 +49,6 @@ module.exports = class User extends Sequelize.Model {
       as: 'Followings', 
       through: 'Follow', 
     });
-  }
+    db.User.belongsToMany(db.Post, {through:'Like' } );
+  };
 };

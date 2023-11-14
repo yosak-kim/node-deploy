@@ -9,6 +9,7 @@ router.use((req, res, next) => {
   res.locals.followerCount = req.user ? req.user.Followers.length : 0;
   res.locals.followingCount = req.user ? req.user.Followings.length : 0;
   res.locals.followerIdList = req.user ? req.user.Followings.map(f => f.id) : [];
+  res.locals.likerIdList = req.post ? req.user.Liker.map(f => f.id) : [];
   next();
 }); //지역변수 설정. 여기서 설정된 지역변수는 템플릿 엔진에서 사용됨
 
@@ -23,15 +24,20 @@ router.get('/join', isNotLoggedIn, (req, res) => {
 router.get('/', async (req, res, next) => {
   try {
     const posts = await Post.findAll({
-      include: { // sequelize의 include는 MySQL의 JOIN에 해당
+      include: [{ // sequelize의 include는 MySQL의 JOIN에 해당
         model: User,
         attributes: ['id', 'nick'],
-      },
+      }, {
+        model: User,
+        attributes: ['id', 'nick'],
+        as: 'Liker', //똑같이 User를 불러오지만 얘는 좋아요를 불러오는 것
+      }],
       order: [['createdAt', 'DESC']],
     });
     res.render('main', {
       title: 'NodeBird',
       twits: posts,
+      user:req.user,
     });
   } catch (err) {
     console.error(err);
